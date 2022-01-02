@@ -46,6 +46,6 @@ bool wire::get(){
 }
 
 
-uint16_t wire::id(){
+uint16_t wire::id() const {
 	return _id ;
 }

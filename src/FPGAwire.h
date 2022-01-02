@@ -15,7 +15,7 @@ class wire {
     void set(bool v) ;
     static bool get(uint16_t id) ;
     bool get() ;
-    uint16_t id() ;
+    uint16_t id() const ;
   private:
     uint16_t _id ;
 } ;
@@ -24,7 +24,7 @@ class wire {
 namespace input {
   class wire : public ::wire {
     public:
-      wire(wire &w) : ::wire(w.id()){} ;
+      wire(const ::wire &w) : ::wire(w.id()){} ;
   } ;
 } ;
 
@@ -32,7 +32,7 @@ namespace input {
 namespace output {
   class wire : public ::wire {
     public:
-      wire(wire &w) : ::wire(w.id()){} ;
+      wire(const ::wire &w) : ::wire(w.id()){} ;
   } ;
 } ;
 

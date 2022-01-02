@@ -181,42 +181,42 @@ bool eval_gate_32(uint8_t gate, uint16_t a, uint16_t b, uint16_t c, uint16_t d, 
 }
 
 
-buf_::buf_(wire a, wire b){
+buf_::buf_(input::wire a, output::wire b){
 	save_gate_2(BUF, a, b) ;
 }
 
 
-not_::not_(wire a, wire b){
+not_::not_(input::wire a, output::wire b){
 	save_gate_2(NOT, a, b) ;
 }
 
 
-and_::and_(wire a, wire b, wire c){
+and_::and_(input::wire a, input::wire b, output::wire c){
 	save_gate_3(AND, a, b, c) ;
 }
 
 
-or_::or_(wire a, wire b, wire c){
+or_::or_(input::wire a, input::wire b, output::wire c){
 	save_gate_3(OR, a, b, c) ;
 }
 
 
-nand_::nand_(wire a, wire b, wire c){
+nand_::nand_(input::wire a, input::wire b, output::wire c){
 	save_gate_3(NAND, a, b, c) ;
 }
 
 
-nor_::nor_(wire a, wire b, wire c){
+nor_::nor_(input::wire a, input::wire b, output::wire c){
 	save_gate_3(NOR, a, b, c) ;
 }
 
 
-xor_::xor_(wire a, wire b, wire c){
+xor_::xor_(input::wire a, input::wire b, output::wire c){
 	save_gate_3(XOR, a, b, c) ;
 }
 
 
-add_::add_(wire a, wire b, wire ci, wire c, wire co){
+add_::add_(input::wire a, input::wire b, input::wire ci, output::wire c, output::wire co){
 	save_gate_5(ADD, a, b, ci, c, co) ;
 }
 

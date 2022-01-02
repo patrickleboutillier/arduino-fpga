@@ -20,49 +20,49 @@
 
 class buf_ {
   public:
-    buf_(wire a, wire b) ;
+    buf_(input::wire a, output::wire b) ;
 } ;
 
 
 class not_ {
   public:
-    not_(wire a, wire b) ;
+    not_(input::wire a, output::wire b) ;
 } ;
 
 
 class and_ {
   public:
-    and_(wire a, wire b, wire c) ;
+    and_(input::wire a, input::wire b, output::wire c) ;
 } ;
 
 
 class or_ {
   public:
-    or_(wire a, wire b, wire c) ;
+    or_(input::wire a, input::wire b, output::wire c) ;
 } ;
 
 
 class nand_ {
   public:
-    nand_(wire a, wire b, wire c) ;
+    nand_(input::wire a, input::wire b, output::wire c) ;
 } ;
 
 
 class nor_ {
   public:
-    nor_(wire a, wire b, wire c) ;
+    nor_(input::wire a, input::wire b, output::wire c) ;
 } ;
 
 
 class xor_ {
   public:
-    xor_(wire a, wire b, wire c) ;
+    xor_(input::wire a, input::wire b, output::wire c) ;
 } ;
 
 
 class add_ {
   public:
-    add_(wire a, wire b, wire ci, wire c, wire co) ;
+    add_(input::wire a, input::wire b, input::wire ci, output::wire c, output::wire co) ;
 } ;
 
 
