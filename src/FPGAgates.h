@@ -7,11 +7,27 @@
 
 #define MAX_GATE_BYTES  1200
 
-#define AND             0
-#define OR              1
-#define NAND            2
-#define NOR             3
-#define XOR             4
+#define BUF             0
+#define NOT             1
+#define AND             2
+#define OR              3
+#define NAND            4
+#define NOR             5
+#define XOR             6
+#define ADD             9
+#define CMP             10
+
+
+class buf_ {
+  public:
+    buf_(wire a, wire b) ;
+} ;
+
+
+class not_ {
+  public:
+    not_(wire a, wire b) ;
+} ;
 
 
 class and_ {
@@ -41,6 +57,12 @@ class nor_ {
 class xor_ {
   public:
     xor_(wire a, wire b, wire c) ;
+} ;
+
+
+class add_ {
+  public:
+    add_(wire a, wire b, wire ci, wire c, wire co) ;
 } ;
 
 
