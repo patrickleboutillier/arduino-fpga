@@ -14,6 +14,12 @@ wire::wire(){
 } ;
 
 
+wire::wire(uint16_t id){
+	// TODO: Check if MAX_WIRES is reached...
+	_id = id ;
+} ;
+
+
 void wire::set(uint16_t id, bool v){
 	uint8_t i = id >> 3 ;
     uint8_t j = id & 7 ;
