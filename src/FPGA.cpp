@@ -1,6 +1,8 @@
 #include "FPGA.h"
 
 
+void wire_set(uint16_t id, bool v) ;
+bool wire_get(uint16_t id) ;
 void settle() ;
 
 
@@ -67,13 +69,13 @@ void FPGA::loop(){
 
             switch (reg){
                 case 0:
-                    wire::set(i, bitRead(PIND, pin)) ;
+                    wire_set(i, bitRead(PIND, pin)) ;
                     break ;
                 case 1:
-                    wire::set(i, bitRead(PINB, pin)) ;
+                    wire_set(i, bitRead(PINB, pin)) ;
                     break ;
                 case 2:
-                    wire::set(i, bitRead(PINC, pin)) ;
+                    wire_set(i, bitRead(PINC, pin)) ;
                     break ;
             }
         }
@@ -90,13 +92,13 @@ void FPGA::loop(){
 
             switch (reg){
                 case 0:
-                    bitWrite(PORTD, pin, wire::get(i)) ;
+                    bitWrite(PORTD, pin, wire_get(i)) ;
                     break ;
                 case 1:
-                    bitWrite(PORTB, pin, wire::get(i)) ;
+                    bitWrite(PORTB, pin, wire_get(i)) ;
                     break ;
                 case 2:
-                    bitWrite(PORTC, pin, wire::get(i)) ;
+                    bitWrite(PORTC, pin, wire_get(i)) ;
                     break ;
             }
         }

@@ -113,6 +113,16 @@ void test_xor(){
 }
 
 
+void fullAdder(input::wire a, input::wire b, input::wire ci, output::wire c, output::wire co){
+  wire i, coa, cob ;
+  xor_ xor1(a, b, i) ;
+  xor_ xor2(i, ci, c) ;
+  and_ and1(ci, i, coa) ;
+  and_ and2(a, b, cob) ;
+  or_ or1(coa, cob, co) ;
+}
+
+
 void test_add(){
     wire a, b, ci, c, co ;
     add_(a, b, ci, c, co) ;

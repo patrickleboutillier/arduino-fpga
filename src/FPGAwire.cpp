@@ -46,3 +46,9 @@ wire::wire(){
 	_id = MAXID++ ;
 	wire_set(_id, 0) ;
 } ;
+
+
+wire::wire(uint16_t id){
+	// TODO: Check if MAX_WIRES is reached...
+	_id = id ;
+} ;
