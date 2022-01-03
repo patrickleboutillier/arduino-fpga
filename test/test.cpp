@@ -3,15 +3,19 @@
 #include "tap.h"
 
 
+void wire_set(wire w, bool v) ;
+bool wire_get(wire w) ;
+
+
 void test_buf(){
     wire a, b ;
     buf_(a, b) ;
 
     for (int va = 0 ; va < 2 ; va++){
-        a.set(va) ;
+        wire_set(a, va) ;
         settle() ;
         bool res = va ;
-        ok(b.get() == res, "%d == %d", a.get(), res) ;
+        ok(wire_get(b) == res, "%d == %d", wire_get(a), res) ;
     }
 }
 
@@ -21,10 +25,10 @@ void test_not(){
     not_(a, b) ;
 
     for (int va = 0 ; va < 2 ; va++){
-        a.set(va) ;
+        wire_set(a, va) ;
         settle() ;
         bool res = ~va ;
-        ok(b.get() == res, "~%d == %d", a.get(), res) ;
+        ok(wire_get(b) == res, "~%d == %d", wire_get(a), res) ;
     }
 }
 
@@ -35,11 +39,11 @@ void test_and(){
 
     for (int va = 0 ; va < 2 ; va++){
         for (int vb = 0 ; vb < 2 ; vb++){
-            a.set(va) ;
-            b.set(vb) ;
+            wire_set(a, va) ;
+            wire_set(b, vb) ;
             settle() ;
             bool res = va & vb ;
-            ok(c.get() == res, "%d & %d == %d", a.get(), b.get(), res) ;
+            ok(wire_get(c) == res, "%d & %d == %d", wire_get(a), wire_get(b), res) ;
         }
     }
 }
@@ -51,11 +55,11 @@ void test_or(){
 
     for (int va = 0 ; va < 2 ; va++){
         for (int vb = 0 ; vb < 2 ; vb++){
-            a.set(va) ;
-            b.set(vb) ;
+            wire_set(a, va) ;
+            wire_set(b, vb) ;
             settle() ;
             bool res = va | vb ;
-            ok(c.get() == res, "%d | %d == %d", a.get(), b.get(), res) ;
+            ok(wire_get(c) == res, "%d | %d == %d", wire_get(a), wire_get(b), res) ;
         }
     }
 }
@@ -67,11 +71,11 @@ void test_nand(){
 
     for (int va = 0 ; va < 2 ; va++){
         for (int vb = 0 ; vb < 2 ; vb++){
-            a.set(va) ;
-            b.set(vb) ;
+            wire_set(a, va) ;
+            wire_set(b, vb) ;
             settle() ;
             bool res = ~(va & vb) ;
-            ok(c.get() == res, "~(%d & %d) == %d", a.get(), b.get(), res) ;
+            ok(wire_get(c) == res, "~(%d & %d) == %d", wire_get(a), wire_get(b), res) ;
         }
     }
 }
@@ -83,11 +87,11 @@ void test_nor(){
 
     for (int va = 0 ; va < 2 ; va++){
         for (int vb = 0 ; vb < 2 ; vb++){
-            a.set(va) ;
-            b.set(vb) ;
+            wire_set(a, va) ;
+            wire_set(b, vb) ;
             settle() ;
             bool res = ~(va | vb) ;
-            ok(c.get() == res, "~(%d | %d) == %d", a.get(), b.get(), res) ;
+            ok(wire_get(c) == res, "~(%d | %d) == %d", wire_get(a), wire_get(b), res) ;
         }
     }
 }
@@ -99,11 +103,11 @@ void test_xor(){
 
     for (int va = 0 ; va < 2 ; va++){
         for (int vb = 0 ; vb < 2 ; vb++){
-            a.set(va) ;
-            b.set(vb) ;
+            wire_set(a, va) ;
+            wire_set(b, vb) ;
             settle() ;
             bool res = va ^ vb ;
-            ok(c.get() == res, "%d ^ %d == %d", a.get(), b.get(), res) ;
+            ok(wire_get(c) == res, "%d ^ %d == %d", wire_get(a), wire_get(b), res) ;
         }
     }
 }
@@ -116,15 +120,15 @@ void test_add(){
     for (int va = 0 ; va < 2 ; va++){
         for (int vb = 0 ; vb < 2 ; vb++){
             for (int vci = 0 ; vci < 2 ; vci++){
-                a.set(va) ;
-                b.set(vb) ;
-                ci.set(vci) ;
+                wire_set(a, va) ;
+                wire_set(b, vb) ;
+                wire_set(ci, vci) ;
                 settle() ;
                 uint8_t sum = va + vb + vci ;
                 bool cy = sum >> 1 ;
                 sum = sum & 1 ;
-                ok(c.get() == sum, "sum(%d + %d + %d) == %d", a.get(), b.get(), ci.get(), sum) ;
-                ok(co.get() == cy, "cy(%d + %d + %d) == %d", a.get(), b.get(), ci.get(), cy) ;
+                ok(wire_get(c) == sum, "sum(%d + %d + %d) == %d", wire_get(a), wire_get(b), wire_get(ci), sum) ;
+                ok(wire_get(co) == cy, "cy(%d + %d + %d) == %d", wire_get(a), wire_get(b), wire_get(ci), cy) ;
             }
         }
     }

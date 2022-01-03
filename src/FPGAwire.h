@@ -7,32 +7,45 @@
 #define MAX_WIRES   512
 
 
-class wire {
+class iwire {
+   public:
+      virtual uint16_t id() const = 0 ;
+} ;
+
+
+class wire : public iwire {
   public:
     wire() ;
-    wire(uint16_t id) ;
-    static void set(uint16_t id, bool v) ;
-    void set(bool v) ;
-    static bool get(uint16_t id) ;
-    bool get() ;
-    uint16_t id() const ;
+    uint16_t id() const { return _id ; } ;
   private:
     uint16_t _id ;
 } ;
 
 
+template <uint8_t n> class bus {
+  private:
+    wire wires[n] ;
+} ;
+
+
 namespace input {
-  class wire : public ::wire {
+  class wire : public ::iwire  {
     public:
-      wire(const ::wire &w) : ::wire(w.id()){} ;
+      wire(const ::wire &w){ _id = w.id() ; } ;
+      uint16_t id() const { return _id ; } ;
+    private:
+      uint16_t _id ;
   } ;
 } ;
 
 
 namespace output {
-  class wire : public ::wire {
+  class wire : public ::iwire {
     public:
-      wire(const ::wire &w) : ::wire(w.id()){} ;
+      wire(const ::wire &w){ _id = w.id() ; } ;
+      uint16_t id() const { return _id ; } ;
+    private:
+      uint16_t _id ;
   } ;
 } ;
 

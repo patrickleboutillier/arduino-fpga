@@ -7,17 +7,21 @@ static uint16_t MAXPOS = 0 ;
 static uint8_t GATES[MAX_GATE_BYTES] ;
 
 
+void wire_set(uint16_t id, bool v) ;
+bool wire_get(uint16_t id) ;
+
+
 uint8_t peek_gate(uint16_t pos){
 	return GATES[pos] >> 4 ;
 }
 
 
-void save_gate_2(uint8_t gate, wire a, wire b){
+void save_gate_2(uint8_t gate, uint16_t a, uint16_t b){
 	// TODO: Check if MAX_GATE_BYTES is reached...
 	uint32_t bytes = 
 		(uint32_t)gate << 28 | 
-		(uint32_t)a.id() << 19 | 
-		(uint32_t)b.id() << 10 ;
+		(uint32_t)a << 19 | 
+		(uint32_t)b << 10 ;
 	GATES[MAXPOS++] = (bytes >> 24) & 0xFF ;  
 	GATES[MAXPOS++] = (bytes >> 16) & 0xFF ;
 	GATES[MAXPOS++] = (bytes >> 8) & 0xFF ;   
@@ -35,9 +39,9 @@ void restore_gate_2(uint16_t pos, uint16_t &a, uint16_t &b){
 
 
 bool eval_gate_11(uint8_t gate, uint16_t a, uint16_t b){
-	bool prev = wire::get(b) ;
+	bool prev = wire_get(b) ;
 	bool cur ;
-	bool va = wire::get(a) ;
+	bool va = wire_get(a) ;
 	switch (gate){
 		case BUF: 
 			cur = va ;
@@ -47,7 +51,7 @@ bool eval_gate_11(uint8_t gate, uint16_t a, uint16_t b){
 			break ;
 	}
 	if (cur != prev){
-		wire::set(b, cur) ;
+		wire_set(b, cur) ;
 		return 1 ; 
 	}
 
@@ -55,13 +59,13 @@ bool eval_gate_11(uint8_t gate, uint16_t a, uint16_t b){
 }
 
 
-void save_gate_3(uint8_t gate, wire a, wire b, wire c){
+void save_gate_3(uint8_t gate, uint16_t a, uint16_t b, uint16_t c){
 	// TODO: Check if MAX_GATE_BYTES is reached...
 	uint32_t bytes = 
 		(uint32_t)gate << 28 | 
-		(uint32_t)a.id() << 19 | 
-		(uint32_t)b.id() << 10 | 
-		(uint32_t)c.id() << 1 ;
+		(uint32_t)a << 19 | 
+		(uint32_t)b << 10 | 
+		(uint32_t)c << 1 ;
 	GATES[MAXPOS++] = (bytes >> 24) & 0xFF ;  
 	GATES[MAXPOS++] = (bytes >> 16) & 0xFF ;
 	GATES[MAXPOS++] = (bytes >> 8) & 0xFF ;  
@@ -82,9 +86,9 @@ void restore_gate_3(uint16_t pos, uint16_t &a, uint16_t &b, uint16_t &c){
 
 
 bool eval_gate_21(uint8_t gate, uint16_t a, uint16_t b, uint16_t c){
-	bool prev = wire::get(c) ;
+	bool prev = wire_get(c) ;
 	bool cur ;
-	bool va = wire::get(a), vb = wire::get(b) ;
+	bool va = wire_get(a), vb = wire_get(b) ;
 
 	switch (gate){
 		case AND: 
@@ -104,7 +108,7 @@ bool eval_gate_21(uint8_t gate, uint16_t a, uint16_t b, uint16_t c){
 			break ;
 	}
 	if (cur != prev){
-		wire::set(c, cur) ;
+		wire_set(c, cur) ;
 		return 1 ; 
 	}
 
@@ -112,18 +116,18 @@ bool eval_gate_21(uint8_t gate, uint16_t a, uint16_t b, uint16_t c){
 }
 
 
-void save_gate_5(uint8_t gate, wire a, wire b, wire c, wire d, wire e){
+void save_gate_5(uint8_t gate, uint16_t a, uint16_t b, uint16_t c, uint16_t d, uint16_t e){
 	// TODO: Check if MAX_GATE_BYTES is reached...
-	uint16_t id = d.id() ;
+	uint16_t id = d ;
 	uint32_t bytes = 
 		(uint32_t)gate << 28 | 
-		(uint32_t)a.id() << 19 | 
-		(uint32_t)b.id() << 10 | 
-		(uint32_t)c.id() << 1 | 
+		(uint32_t)a << 19 | 
+		(uint32_t)b << 10 | 
+		(uint32_t)c << 1 | 
 		(uint32_t)id >> 8 ;
 	uint32_t bytes2 = 
 		(uint32_t)id << 24 | 
-		(uint32_t)e.id() << 15 ;
+		(uint32_t)e << 15 ;
 	GATES[MAXPOS++] = (bytes >> 24) & 0xFF ;  
 	GATES[MAXPOS++] = (bytes >> 16) & 0xFF ;
 	GATES[MAXPOS++] = (bytes >> 8) & 0xFF ;  
@@ -154,10 +158,10 @@ void restore_gate_5(uint16_t pos, uint16_t &a, uint16_t &b, uint16_t &c, uint16_
 
 // 3 inputs, 2 outputs
 bool eval_gate_32(uint8_t gate, uint16_t a, uint16_t b, uint16_t c, uint16_t d, uint16_t e){
-	bool prev1 = wire::get(d) ;
-	bool prev2 = wire::get(e) ;
+	bool prev1 = wire_get(d) ;
+	bool prev2 = wire_get(e) ;
 	bool cur1, cur2 ;
-	bool va = wire::get(a), vb = wire::get(b), vc = wire::get(c) ;
+	bool va = wire_get(a), vb = wire_get(b), vc = wire_get(c) ;
 	switch (gate){
 		case ADD: { 
 			uint8_t sum = va + vb + vc ;
@@ -169,11 +173,11 @@ bool eval_gate_32(uint8_t gate, uint16_t a, uint16_t b, uint16_t c, uint16_t d, 
 
 	bool change = 0 ;
 	if (cur1 != prev1){
-		wire::set(d, cur1) ;
+		wire_set(d, cur1) ;
 		change = 1 ; 
 	}
 	if (cur2 != prev2){
-		wire::set(e, cur2) ;
+		wire_set(e, cur2) ;
 		change = 1 ; 
 	}
 
@@ -182,42 +186,42 @@ bool eval_gate_32(uint8_t gate, uint16_t a, uint16_t b, uint16_t c, uint16_t d, 
 
 
 buf_::buf_(input::wire a, output::wire b){
-	save_gate_2(BUF, a, b) ;
+	save_gate_2(BUF, a.id(), b.id()) ;
 }
 
 
 not_::not_(input::wire a, output::wire b){
-	save_gate_2(NOT, a, b) ;
+	save_gate_2(NOT, a.id(), b.id()) ;
 }
 
 
 and_::and_(input::wire a, input::wire b, output::wire c){
-	save_gate_3(AND, a, b, c) ;
+	save_gate_3(AND, a.id(), b.id(), c.id()) ;
 }
 
 
 or_::or_(input::wire a, input::wire b, output::wire c){
-	save_gate_3(OR, a, b, c) ;
+	save_gate_3(OR, a.id(), b.id(), c.id()) ;
 }
 
 
 nand_::nand_(input::wire a, input::wire b, output::wire c){
-	save_gate_3(NAND, a, b, c) ;
+	save_gate_3(NAND, a.id(), b.id(), c.id()) ;
 }
 
 
 nor_::nor_(input::wire a, input::wire b, output::wire c){
-	save_gate_3(NOR, a, b, c) ;
+	save_gate_3(NOR, a.id(), b.id(), c.id()) ;
 }
 
 
 xor_::xor_(input::wire a, input::wire b, output::wire c){
-	save_gate_3(XOR, a, b, c) ;
+	save_gate_3(XOR, a.id(), b.id(), c.id()) ;
 }
 
 
 add_::add_(input::wire a, input::wire b, input::wire ci, output::wire c, output::wire co){
-	save_gate_5(ADD, a, b, ci, c, co) ;
+	save_gate_5(ADD, a.id(), b.id(), ci.id(), c.id(), co.id()) ;
 }
 
 
